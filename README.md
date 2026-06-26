@@ -3,30 +3,13 @@
 A C++ Sudoku solver using Donald Knuth's Dancing Links (DLX) algorithm,
 which models Sudoku as an exact cover problem for efficient backtracking.
 
-## Configuration
+## Supported Sizes
 
-The grid size is controlled by two constants at the top of the file:
-
-```cpp
-const int N = 25;        // Grid size (N x N)
-const int BOX_SIZE = 5;  // Box size (BOX_SIZE x BOX_SIZE)
-```
-
-Change these to match your desired puzzle size:
-
-| Puzzle | N  | BOX_SIZE |
-|--------|----|----------|
-| 9×9    | 9  | 3        |
-| 16×16  | 16 | 4        |
-| 25×25  | 25 | 5        |
-
-> Note: N must equal BOX_SIZE².
-
-## Usage
-
-1. Set `N` and `BOX_SIZE` to your desired puzzle size
-2. Fill in the `puzzle` array in `main()` — use `0` for empty cells
-3. For 16×16 and 25×25, values above 9 are printed as letters (A, B, C...)
+| Puzzle | Grid  | Box Size |
+|--------|-------|----------|
+| Small  | 9×9   | 3×3      |
+| Medium | 16×16 | 4×4      |
+| Large  | 25×25 | 5×5      |
 
 ## Build & Run
 
@@ -35,12 +18,48 @@ g++ -O2 -o sudoku sudoku.cpp
 ./sudoku
 ```
 
+## Usage
+
+1. Select your puzzle size from the menu:
+```
+Select puzzle size:
+1. 9x9
+2. 16x16
+3. 25x25
+Choice:
+```
+
+2. Enter the puzzle row by row, using `0` for empty cells:
+```
+Row 1: 5 3 0 0 7 0 0 0 0
+Row 2: 6 0 0 1 9 5 0 0 0
+...
+```
+
+3. For 16×16 and 25×25, values above 9 are entered and displayed as
+   letters (A=10, B=11, C=12, ...)
+
+## Example Input (9×9)
+
+```
+5 3 0 0 7 0 0 0 0
+6 0 0 1 9 5 0 0 0
+0 9 8 0 0 0 0 6 0
+8 0 0 0 6 0 0 0 3
+4 0 0 8 0 3 0 0 1
+7 0 0 0 2 0 0 0 6
+0 6 0 0 0 0 2 8 0
+0 0 0 4 1 9 0 0 5
+0 0 0 0 8 0 0 7 9
+```
+
 ## Algorithm
 
 Sudoku is modeled as an exact cover problem with four constraint types:
-- Each cell must have exactly one digit
-- Each row must contain each digit once
-- Each column must contain each digit once
-- Each box must contain each digit once
+- Each cell must contain exactly one digit
+- Each row must contain each digit exactly once
+- Each column must contain each digit exactly once
+- Each box must contain each digit exactly once
 
-DLX solves this efficiently using linked list column operations (cover/uncover).
+DLX solves this by efficiently removing and restoring columns
+in a circular doubly linked list (cover/uncover operations).
